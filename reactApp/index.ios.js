@@ -59,7 +59,7 @@ export default class reactApp extends Component {
  }
 
 fetchWallsJSON() {
-  var url = 'http://google.com';
+  var url = 'http://localhost:1337/images';
    fetch(url)
      .then( response => response.json() )
      .then( jsonData => {
