@@ -1,30 +1,6 @@
-// 'use strict';
-// var React = require('react');
-// var ReactNative = require('react-native');
-//
-// var styles = ReactNative.StyleSheet.create({
-//   text : {
-//     color : 'black',
-//     backgroundColor : 'white'
-//     fontSize : 30,
-//     margin : 80
-//   }
-// });
-//
-// class PropertyFinderApp extends React.Component{
-//   render(){
-//     return React.createElement(ReactNative.Text,{styles.text},"Hellow world");
-//   }
-//   ReactNative.AppRegistry.registerComponent('PropertyFinder',function(){return PropertyFinderApp});
-// }
-
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
 'use strict';
 var randManager = require('./RandManager.js');
+var Swiper = require('react-native-swiper');
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -59,7 +35,6 @@ export default class reactApp extends Component {
         style={[styles.centering, {height: 80}]}
         size="large"
       />
-      
          <Text style={{color: '#fff'}}>Contacting</Text>
 
   </View>
@@ -71,15 +46,17 @@ export default class reactApp extends Component {
    var {wallsJSON, isLoading} = this.state;
    if (!isLoading) {
      return (
-       <View style={styles.loadingDone}>
+   <View style = {styles.loadingDone}>
+       <Swiper>
          {wallsJSON.map((wallpaper, index) => {
            return (
-             <Text key={index}>
-               {wallpaper.author} {"\n"}
+             <Text style={styles.welcome} key={index}>
+               {wallpaper.author}
              </Text>
            );
          })}
-       </View>
+       </Swiper>
+      </View>
      );
    }
  }
