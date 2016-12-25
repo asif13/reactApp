@@ -31,7 +31,7 @@ import {
   StyleSheet,
   Text,
   View,
-  ActivityIndicatorIOS
+  ActivityIndicator
 } from 'react-native';
 const NUM_WALLPAPERS = 5;
 export default class reactApp extends Component {
@@ -54,6 +54,12 @@ export default class reactApp extends Component {
    return (
 
   <View style={styles.loadingContainer}>
+    <ActivityIndicator
+        animating={this.state.animating}
+        style={[styles.centering, {height: 80}]}
+        size="large"
+      />
+      
          <Text style={{color: '#fff'}}>Contacting</Text>
 
   </View>
@@ -69,7 +75,7 @@ export default class reactApp extends Component {
          {wallsJSON.map((wallpaper, index) => {
            return (
              <Text key={index}>
-               {wallpaper.id}
+               {wallpaper.author} {"\n"}
              </Text>
            );
          })}
