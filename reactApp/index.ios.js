@@ -23,7 +23,8 @@
  * https://github.com/facebook/react-native
  * @flow
  */
-
+'use strict';
+var randManager = require('./RandManager.js');
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -32,7 +33,7 @@ import {
   View,
   ActivityIndicatorIOS
 } from 'react-native';
-
+const NUM_WALLPAPERS = 5;
 export default class reactApp extends Component {
   render() {
     var {isLoading} = this.state;
@@ -53,34 +54,48 @@ export default class reactApp extends Component {
    return (
 
   <View style={styles.loadingContainer}>
-         <Text style={{color: '#fff'}}>Contacting Unsplash</Text>
+         <Text style={{color: '#fff'}}>Contacting</Text>
 
   </View>
    );
  }
 
  renderResults() {
-   return (
 
- <View>
-       <Text>
-         Data loaded
-       </Text>
-
-  </View>
-   );
+   var {wallsJSON, isLoading} = this.state;
+   if (!isLoading) {
+     return (
+       <View style={styles.loadingDone}>
+         {wallsJSON.map((wallpaper, index) => {
+           return (
+             <Text key={index}>
+               {wallpaper.id}
+             </Text>
+           );
+         })}
+       </View>
+     );
+   }
  }
+
 fetchWallsJSON() {
   var url = 'https://unsplash.it/list';
    fetch(url)
      .then( response => response.json() )
      .then( jsonData => {
-       console.log(jsonData);
-       this.setState({isLoading: false}); //update isLoading
-
+      //  console.log(jsonData);
+      var randomIds = randManager.uniqueRandomNumbers(NUM_WALLPAPERS,0,jsonData.length);
+      var walls = [];
+      randomIds.forEach(randomId => {
+        walls.push(jsonData[randomId]);
+      })
+      this.setState({isLoading: false,
+        wallsJSON : [].concat(walls)
+      }); //update isLoading
      })
- .catch( error => console.log("Fetch error " + error) );
+     .catch( error => console.log("Fetch error " + error) );
     }
+
   componentDidMount(){
    this.fetchWallsJSON();
    }
@@ -111,6 +126,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#000'
+  },
+   loadingDone: {
+	flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
