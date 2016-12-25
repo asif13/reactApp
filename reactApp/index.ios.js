@@ -29,25 +29,17 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  ActivityIndicatorIOS
 } from 'react-native';
 
 export default class reactApp extends Component {
   render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          NOPE
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
-    );
+    var {isLoading} = this.state;
+    if(isLoading)
+      return this.renderLoadingMessage();
+    else
+      return this.renderResults();
   }
   constructor(props) {
    super(props);
@@ -57,13 +49,35 @@ export default class reactApp extends Component {
      isLoading: true
    };
  }
+ renderLoadingMessage() {
+   return (
 
+  <View style={styles.loadingContainer}>
+         <Text style={{color: '#fff'}}>Contacting Unsplash</Text>
+
+  </View>
+   );
+ }
+
+ renderResults() {
+   return (
+
+ <View>
+       <Text>
+         Data loaded
+       </Text>
+
+  </View>
+   );
+ }
 fetchWallsJSON() {
-  var url = 'http://localhost:1337/images';
+  var url = 'https://unsplash.it/list';
    fetch(url)
      .then( response => response.json() )
      .then( jsonData => {
        console.log(jsonData);
+       this.setState({isLoading: false}); //update isLoading
+
      })
  .catch( error => console.log("Fetch error " + error) );
     }
@@ -74,6 +88,7 @@ fetchWallsJSON() {
 }
 
 const styles = StyleSheet.create({
+
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -89,6 +104,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#333333',
     marginBottom: 5,
+  },
+   loadingContainer: {
+	flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#000'
   },
 });
 
