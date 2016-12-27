@@ -1,12 +1,25 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { View, Text } from 'react-native';
- 
-const AlbumList = () => {
+import axios from 'axios';
+
+class AlbumList extends Component {
+    state = { albums: [] };
+
+    componentWillMount() {
+        axios.get('http://localhost:1337/AlbumList').then(response => this.setState({ albums: response.data }));
+    }
+
+    renderAlbums() {
+        return this.state.albums.map(album => <Text>{album.title}</Text>);
+    }
+
+    render() {
     return (
-        <View>
-        <Text>Album List</Text>
-        </View>
-    );
-};
+            <View>
+                {this.renderAlbums()}
+            </View>
+        );
+    }
+}
 
 export default AlbumList;
