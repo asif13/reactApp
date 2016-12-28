@@ -7,7 +7,7 @@ class AlbumList extends Component {
     state = { albums: [] };
 
     componentWillMount() {
-        axios.get('http://localhost:1337/AlbumList').then(response => this.setState({ albums: response.data }));
+        axios.get('http://192.168.1.84:1337/AlbumList').then(response => this.setState({ albums: response.data }));
     }
 
     renderAlbums() {
