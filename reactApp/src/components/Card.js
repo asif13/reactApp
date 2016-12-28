@@ -12,7 +12,7 @@ const styles = {
         borderWidth: 1,
         borderRadius: 2,
         borderColor: '#ddd',
-        borderBottomWidth: 0,
+        borderTopWidth: 0,
         shadowColor: '#000',
         shadowOpacity: 0.1,
         shadowRadius: 2,
