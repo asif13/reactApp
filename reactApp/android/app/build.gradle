@@ -137,3 +137,9 @@ task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
 }
+android {
+    compileSdkVersion 23
+    buildToolsVersion '25.0.2'
+}
+dependencies {
+}
