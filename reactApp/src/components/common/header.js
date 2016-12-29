@@ -7,7 +7,7 @@ const Header = (props) => (
         </View>
     );
 
-export default Header;
+export { Header };
 
 const styles = {
     viewStyle: {
