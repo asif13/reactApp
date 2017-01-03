@@ -7,9 +7,37 @@ class LoginForm extends Component {
     state = { email: '', password: '', error: '' };
     onButtonPress() {
     const { email, password } = this.state;
-    firebase.auth().signInWithEmailAndPassword(email, password).catch(() => {
-        firebase.auth().createUserWithEmailAndPassword(email, password).catch(() => {
-            this.setState({ error: 'Auth failed' });
+    firebase.auth().signInWithEmailAndPassword(email, password).catch((error) => {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            if (errorCode === 'auth/wrong-password') {
+                alert('Wrong password.');
+            } else {
+                alert(errorMessage);
+            }
+            console.log(error);
+             if (error == null){
+                    console.log(' user logged in');
+            }else{
+                console.log(' user logged in error');
+
+            }
+            firebase.auth().createUserWithEmailAndPassword(email, password).catch((error) => {
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                if (errorCode == 'auth/weak-password') {
+                    console.log('The password is too weak.');
+                } else {
+                    console.log(errorMessage);
+                }
+                console.log(error);
+                if (error == null){
+                    console.log(' user created');
+                }else{
+                    console.log(' user creation in error');
+                }
+                this.setState({ error: 'Auth failed' });
         });
     });
     }
