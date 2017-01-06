@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Text } from 'react-native';
-import { Button, Card, CardSection, Input } from './common';
+import { Button, Card, CardSection, Input, Spinner } from './common';
 import firebase from 'firebase';
 
 class LoginForm extends Component {
-    state = { email: '', password: '', error: '' };
+    state = { email: '', password: '', error: '', loading : false };
     onButtonPress() {
     const { email, password } = this.state;
     firebase.auth().signInWithEmailAndPassword(email, password).catch((error) => {
@@ -37,7 +37,7 @@ class LoginForm extends Component {
                 }else{
                     console.log(' user creation in error');
                 }
-                this.setState({ error: 'Auth failed' });
+                this.setState({ error: 'Auth failed',loading: true });
         });
     });
     }
@@ -64,12 +64,22 @@ class LoginForm extends Component {
                 </CardSection>
                 <Text style={styles.errorTextStyle}>{this.state.error}</Text>
                 <CardSection>
-                <Button title={'Log In !'} onPress={this.onButtonPress.bind(this)} />
+                {this.renderButton()}
                 </CardSection>
             </Card>
         );
     }
 }
+
+renderButton() {
+    if (this.state.loading){
+        return <Spinner size = "small" />;
+    }else{
+        return(
+         <Button title={'Log In !'} onPress={this.onButtonPress.bind(this)}></Button>
+        );
+    }
+};
 
 const styles = {
 errorTextStyle: {
@@ -78,4 +88,5 @@ errorTextStyle: {
     color: 'red',
     }
 };
+
 export default LoginForm;
