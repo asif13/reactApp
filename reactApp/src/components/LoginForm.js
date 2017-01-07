@@ -8,7 +8,9 @@ class LoginForm extends Component {
 
     onButtonPress() {
     const { email, password } = this.state;
-    firebase.auth().signInWithEmailAndPassword(email, password).catch((error) => {
+    firebase.auth().signInWithEmailAndPassword(email, password).then(
+        this.onLoginSuccess.bind(this)
+    ).catch(() => {
             // var errorCode = error.code;
             // var errorMessage = error.message;
             // if (errorCode === 'auth/wrong-password') {
@@ -21,9 +23,8 @@ class LoginForm extends Component {
             //         console.log(' user logged in');
             // }else{
             //     console.log(' user logged in error');
-
             // }
-            firebase.auth().createUserWithEmailAndPassword(email, password).catch((error) => {
+            firebase.auth().createUserWithEmailAndPassword(email, password).then(this.onLoginSuccess.bind(this)).catch(() => {
                 // Handle Errors here.
                 // var errorCode = error.code;
                 // var errorMessage = error.message;
@@ -38,9 +39,24 @@ class LoginForm extends Component {
                 // }else{
                 //     console.log(' user creation in error');
                 // }
-                this.setState({ error: 'Auth failed',loading: true });
+                this.onLoginFail.bind(this);
         });
     });
+    }
+
+    onLoginSuccess(){
+        this.setState({
+            email: '',
+            password: '',
+            loading: false,
+            error: ''
+        });
+    }
+    onLoginFail() {
+        console.log('login failed');
+        this.setState({
+            error: 'Authenticattion failed', loading: false
+        });
     }
     renderButton() {
     if (this.state.loading) {
