@@ -1,29 +1,44 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import firebase from 'firebase';
-import { Header } from './components/common';
+import { Header, Button, CardSection } from './components/common';
 import LoginForm from './components/LoginForm';
 
 class App extends Component {
+    state = { loggedIn: false };
     componentWillMount() {
-       const init = firebase.initializeApp({
+        firebase.initializeApp({
         apiKey: 'AIzaSyAzSRIgf5ko2MAqFHYYz0wq6a7ofPzoaTc',
         authDomain: 'reactapp-d33cf.firebaseapp.com',
         databaseURL: 'https://reactapp-d33cf.firebaseio.com',
         storageBucket: 'reactapp-d33cf.appspot.com',
         messagingSenderId: '416469883530'
     });
-    if (init == null) {
-        console.log('init failed');
-    } else {
-        console.log('init passed');
+    firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+            this.setState({ loggedIn: true });
+        } else {
+            this.setState({ loggedIn: false });
         }
+    });
     }
+
+    renderContent() {
+        if (this.state.loggedIn) {
+            return (
+                <CardSection>
+                <Button title="Log out" />
+                </CardSection>
+            );
+        }
+        return <LoginForm />;
+    }
+
     render() {
         return (
         <View>
         <Header headerText="Login" />
-        <LoginForm />
+        {this.renderContent()}
         </View>
         );
     }

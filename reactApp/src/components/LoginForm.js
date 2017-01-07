@@ -7,44 +7,27 @@ class LoginForm extends Component {
     state = { email: '', password: '', error: '', loading: false };
 
     onButtonPress() {
+    console.log('onButtonPress');
     const { email, password } = this.state;
-    firebase.auth().signInWithEmailAndPassword(email, password).then(
-        this.onLoginSuccess.bind(this)
+    firebase.auth().signInWithEmailAndPassword(email, password).then(() => {
+        console.log('1');
+        this.onLoginSuccess(); 
+    }
     ).catch(() => {
-            // var errorCode = error.code;
-            // var errorMessage = error.message;
-            // if (errorCode === 'auth/wrong-password') {
-            //     alert('Wrong password.');
-            // } else {
-            //     alert(errorMessage);
-            // }
-            // console.log(error);
-            //  if (error == null){
-            //         console.log(' user logged in');
-            // }else{
-            //     console.log(' user logged in error');
-            // }
-            firebase.auth().createUserWithEmailAndPassword(email, password).then(this.onLoginSuccess.bind(this)).catch(() => {
-                // Handle Errors here.
-                // var errorCode = error.code;
-                // var errorMessage = error.message;
-                // if (errorCode == 'auth/weak-password') {
-                //     console.log('The password is too weak.');
-                // } else {
-                //     console.log(errorMessage);
-                // }
-                // console.log(error);
-                // if (error == null){
-                //     console.log(' user created');
-                // }else{
-                //     console.log(' user creation in error');
-                // }
-                this.onLoginFail.bind(this);
+          console.log('2');
+            firebase.auth().createUserWithEmailAndPassword(email, password).then(() => {
+                  console.log('3');
+                 this.onLoginSuccess(); 
+            }
+                ).catch(() => {
+                console.log('4');
+                this.onLoginFail(); 
         });
     });
     }
 
-    onLoginSuccess(){
+    onLoginSuccess() {
+        console.log('logged In');
         this.setState({
             email: '',
             password: '',
@@ -75,7 +58,7 @@ class LoginForm extends Component {
                     label="email"
                     value={this.state.email}
                     onChangeText={email => this.setState({ email })}
-                     />
+                    />
                 </CardSection>
                  <CardSection>
                     <Input 
@@ -84,7 +67,7 @@ class LoginForm extends Component {
                     label="password"
                     value={this.state.password}
                     onChangeText={password => this.setState({ password })}
-                     />
+                    />
                 </CardSection>
                 <Text style={styles.errorTextStyle}>{this.state.error}</Text>
                 <CardSection>
@@ -94,7 +77,6 @@ class LoginForm extends Component {
         );
     }
 }
-
 
 
 const styles = {
