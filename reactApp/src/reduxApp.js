@@ -9,7 +9,7 @@ import { Header, Button, CardSection, Spinner } from './components/common';
 const ReduxApp = () =>  {
     return (
         <Provider store={createStore(reducers)}>
-        <View>
+        <View style={{ flex: 1 }}>
         <Header headerText="Home" />
         <LibraryList />
         </View>
